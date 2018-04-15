@@ -1,2 +1,2 @@
-# FeelCraft
+# GifEmotion
 Project for Hack Dartmouth
