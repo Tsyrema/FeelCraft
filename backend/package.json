@@ -9,6 +9,9 @@
   "author": "kevin reinoso",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3"
+    "@google-cloud/language": "^1.2.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "twilio": "^3.15.0"
   }
 }
