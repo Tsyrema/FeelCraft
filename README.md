@@ -1,2 +1,2 @@
-# Gif Emotion
+# GifEmotion
 Project for Hack Dartmouth
