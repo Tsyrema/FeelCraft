@@ -28,10 +28,9 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
-
-app.post('/', function(req, res) {
-  var conversation = req.body.data;
-  var phoneNumber = req.body.phoneNumber;
+app.get('/neutral', function(req, res) {
+  var conversation = "i had a meh day"
+  var phoneNumber = "+19294351864";
   var query = {
     type: "PLAIN_TEXT",
     language: "EN",
@@ -50,20 +49,17 @@ app.post('/', function(req, res) {
         })
         .then(function(results) {
           var temp = results[0];
-          docEntity = temp.entities[0].name;
+          docEntity="ok day";
         })
         .then(function() {
-          if(docSentiment.score<= negative){
-            docEntity+=" sad";
-          }
           console.log(docEntity);
           console.log(docSentiment);
           giphy.search({
             q: docEntity,
             rating: 'g',
-            limit: 5,
+            limit: 25,
           }, function(err, response) {
-             var ran= Math.floor(Math.random() * Math.floor(5));
+             var ran= Math.floor(Math.random() * Math.floor(25));
              var data = response.data[ran];
              console.log(data);
              sendText(phoneNumber,data)
@@ -82,6 +78,129 @@ app.post('/', function(req, res) {
 
     })
     .catch(function(err) {
+      res.json({
+        success:"false",
+        error: err
+      })
+    });
+
+
+});
+app.get('/negative', function(req, res) {
+  var conversation = "i had a bad day"
+  var phoneNumber = "+19294351864";
+  var query = {
+    type: "PLAIN_TEXT",
+    language: "EN",
+    content: conversation
+  };
+  var docSentiment;
+  var docEntity;
+
+  client.analyzeSentiment({
+      document: query
+    })
+    .then(function(results) {
+      docSentiment = results[0].documentSentiment;
+      client.analyzeEntities({
+          document: query
+        })
+        .then(function(results) {
+          var temp = results[0];
+                docEntity="bad day";
+        })
+        .then(function() {
+          console.log(docEntity);
+          console.log(docSentiment);
+          giphy.search({
+            q: docEntity,
+            rating: 'g',
+            limit: 25,
+          }, function(err, response) {
+             var ran= Math.floor(Math.random() * Math.floor(25));
+             var data = response.data[ran];
+             console.log(data);
+             sendText(phoneNumber,data)
+             res.json({
+               success:"true"
+             })
+          });
+
+        })
+        .catch(function(err) {
+            consol.log(err)
+          res.json({
+
+            success:"false",
+            error: err
+          })
+        });
+
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success:"false",
+        error: err
+      })
+    });
+
+
+});
+app.get('/', function(req, res) {
+  var conversation = "i had a good day today. It was a beautiful day"
+  var phoneNumber = "+19294351864";
+  var query = {
+    type: "PLAIN_TEXT",
+    language: "EN",
+    content: conversation
+  };
+  var docSentiment;
+  var docEntity;
+
+  client.analyzeSentiment({
+      document: query
+    })
+    .then(function(results) {
+      docSentiment = results[0].documentSentiment;
+      client.analyzeEntities({
+          document: query
+        })
+        .then(function(results) {
+          console.log(results);
+          var temp = results[0];
+          console.log(temp)
+          docEntity="good day";
+        })
+        .then(function() {
+          console.log(docEntity);
+          console.log(docSentiment);
+          giphy.search({
+            q: docEntity,
+            rating: 'g',
+            limit: 25,
+          }, function(err, response) {
+             var ran= Math.floor(Math.random() * Math.floor(25));
+             var data = response.data[ran];
+             console.log(data);
+             sendText(phoneNumber,data)
+             res.json({
+               success:"true"
+             })
+          });
+
+        })
+        .catch(function(err) {
+          console.log(err)
+          res.json({
+            success:"false",
+            error: err
+          })
+        });
+
+    })
+    .catch(function(err) {
+      console.log(err);
       res.json({
         success:"false",
         error: err

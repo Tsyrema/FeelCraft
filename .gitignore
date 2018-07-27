@@ -2,7 +2,8 @@
 node_modules/
 # Configuration file
 config.json
-
+keys.json
+google_keys.json
 # Mac DS
 .DS_Store
 
